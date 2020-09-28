@@ -6,26 +6,30 @@
   <arg name="limited" default="true"  doc="If true, limits joint range [-PI, PI] on all joints" />
   <arg name="paused" default="false" doc="Starts gazebo in paused mode" />
   <arg name="gui" default="true" doc="Starts gazebo gui" />
+  <arg name="config" default="true" doc="TODO" />
+
+  <!-- Robot model information for choosing correct launch/configuration files -->
+  <arg name="model" default="ur5" doc="Robot number model 3, 5, or 10 (16 not currently implemented)"/>
   <arg name="sim_workstation" default="false" doc="Attaches robot to simulated ARMada workstation" />
   <arg name="gripper" default="" doc="Attaches gripper to end of robot arm" />
 
-  <!-- Robot model information for choosing correct launch/configuration files -->
-  <arg name="model" default="ur3" doc="Robot number model 3, 5, or 10 (16 not currently implemented)"/>
-
   <!-- Bring up Gazebo simulation of robot -->
-  <include file="$(eval find('ur_e_gazebo') + '/launch/' + arg('model') + 'e.launch')">
-      <arg name="limited" value="true" />
+  <!-- <include file="$(eval find('ur_e_gazebo') + '/launch/' + arg('model') + 'e.launch')"> -->
+  <include file="$(find ur_e_gazebo)/launch/ure.launch">
+      <arg name="limited" value="$(arg limited)" />
+      <arg name="model" value="$(arg model)" />
+      <arg name="sim_workstation" value="$(arg sim_workstation)" />
   </include>
   
   <!-- Launch gazebo controllers for robot -->
   <include file="$(eval find(arg('model') + '_e_moveit_config') + '/launch/' + arg('model') + '_e_moveit_planning_execution.launch')">
-      <arg name="sim" value="true" />
-      <arg name="limited" value="true" />
+      <arg name="sim" value="$(arg sim)" />
+      <arg name="limited" value="$(arg limited)" />
   </include>
 
   <!-- Launch Rviz with moveit interface for robot-->
   <include file="$(eval find(arg('model') + '_e_moveit_config') + '/launch/moveit_rviz.launch')">
-      <arg name="config" value="true" />
+      <arg name="config" value="$(arg config)" />
   </include>
 
 </launch>

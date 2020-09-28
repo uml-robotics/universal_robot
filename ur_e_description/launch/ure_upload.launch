@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="limited" default="false" doc="If true, limits joint range [-PI, PI] on all joints." />
+  <arg name="sim_workstation" default="false" doc="If true, spawn robot atop simualted ARMada workstation in Gazebo world" />
+  <arg name="model" default="ur5" />
+  
+  <group unless="$(arg limited)" >
+      <param unless="$(arg sim_workstation)" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_robot.urdf.xacro'" />
+      <param if="$(arg sim_workstation)" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_robot_workstation.urdf.xacro'" />
+  </group>
+
+  <group if="$(arg limited)" >
+      <param unless="$(arg sim_workstation)" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_joint_limited_robot.urdf.xacro'" />
+      <param if="$(arg sim_workstation)" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_joint_limited_robot_workstation.urdf.xacro'" />
+  </group>
+
+</launch>
