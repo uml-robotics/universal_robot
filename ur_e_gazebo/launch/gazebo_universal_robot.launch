@@ -9,7 +9,7 @@
   <arg name="config" default="true" doc="TODO" />
 
   <!-- Robot model information for choosing correct launch/configuration files -->
-  <arg name="model" default="ur5" doc="Robot number model 3, 5, or 10 (16 not currently implemented)"/>
+  <arg name="model" default="ur5" doc="Robot number model: 3, 5, or 10 (16 not currently implemented)"/>
   <arg name="sim_workstation" default="false" doc="Attaches robot to simulated ARMada workstation" />
   <arg name="gripper" default="" doc="Attaches gripper to end of robot arm" />
 
@@ -19,16 +19,24 @@
       <arg name="limited" value="$(arg limited)" />
       <arg name="model" value="$(arg model)" />
       <arg name="sim_workstation" value="$(arg sim_workstation)" />
+      <arg name="gripper" value="$(arg gripper)" />
   </include>
   
   <!-- Launch gazebo controllers for robot -->
-  <include file="$(eval find(arg('model') + '_e_moveit_config') + '/launch/' + arg('model') + '_e_moveit_planning_execution.launch')">
+  <include file="$(eval find(arg('model') + '_e_moveit_config') + '/launch/' + arg('model') + '_e_moveit_planning_execution.launch')" if="$(eval not arg('gripper'))">
+      <arg name="sim" value="$(arg sim)" />
+      <arg name="limited" value="$(arg limited)" />
+  </include>
+  <include file="$(eval find(arg('model') + '_e_' + arg('gripper') + '_moveit_config') + '/launch/' + arg('model') + '_e_moveit_planning_execution.launch')" unless="$(eval not arg('gripper'))">
       <arg name="sim" value="$(arg sim)" />
       <arg name="limited" value="$(arg limited)" />
   </include>
 
-  <!-- Launch Rviz with moveit interface for robot-->
-  <include file="$(eval find(arg('model') + '_e_moveit_config') + '/launch/moveit_rviz.launch')">
+  <!-- Launch Rviz with moveit interface for robot if no gripper -->
+  <include file="$(eval find(arg('model') + '_e_moveit_config') + '/launch/moveit_rviz.launch')" if="$(eval not arg('gripper'))">
+      <arg name="config" value="$(arg config)" />
+  </include>
+  <include file="$(eval find(arg('model') + '_e_' + arg('gripper') + '_moveit_config') + '/launch/moveit_rviz.launch')" unless="$(eval not arg('gripper'))">
       <arg name="config" value="$(arg config)" />
   </include>
 

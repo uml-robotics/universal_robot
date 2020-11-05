@@ -4,15 +4,28 @@
   <arg name="limited" default="false" doc="If true, limits joint range [-PI, PI] on all joints." />
   <arg name="sim_workstation" default="false" doc="If true, spawn robot atop simualted ARMada workstation in Gazebo world" />
   <arg name="model" default="ur5" />
-  
+  <arg name="gripper" default="" />
+
   <group unless="$(arg limited)" >
-      <param unless="$(arg sim_workstation)" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_robot.urdf.xacro'" />
-      <param if="$(arg sim_workstation)" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_robot_workstation.urdf.xacro'" />
+      <group unless="$(arg sim_workstation)" >
+          <param unless="$(eval gripper == '')" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_robot_$(arg gripper).urdf.xacro'" />
+          <param if="$(eval gripper == '')" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_robot.urdf.xacro'" />
+      </group>
+      <group if="$(arg sim_workstation)" >
+          <param unless="$(eval gripper == '')" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_robot_$(arg gripper)_workstation.urdf.xacro'" />
+          <param if="$(eval gripper == '')" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_robot_workstation.urdf.xacro'" />
+      </group>
   </group>
 
   <group if="$(arg limited)" >
-      <param unless="$(arg sim_workstation)" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_joint_limited_robot.urdf.xacro'" />
-      <param if="$(arg sim_workstation)" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_joint_limited_robot_workstation.urdf.xacro'" />
+      <group unless="$(arg sim_workstation)" >
+          <param unless="$(eval gripper == '')" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_robot_joint_limited_$(arg gripper).urdf.xacro'" />
+          <param if="$(eval gripper == '')" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_robot_joint_limited.urdf.xacro'" />
+      </group>
+      <group if="$(arg sim_workstation)" >
+          <param unless="$(eval gripper == '')" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_robot_joint_limited_$(arg gripper)_workstation.urdf.xacro'" />
+          <param if="$(eval gripper == '')" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_e_description)/urdf/$(arg model)e_robot_joint_limited_workstation.urdf.xacro'" />
+      </group>
   </group>
 
 </launch>

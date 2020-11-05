@@ -5,6 +5,7 @@
   <arg name="gui" default="true" doc="Starts gazebo gui" />
   <arg name="model" default="ur5" doc="Indicates which robot model to use/load" />
   <arg name="sim_workstation" default="false" doc="If true, load robot in Gazebo atop simulated ARMada workstation" />
+  <arg name="gripper" default="" />
   
   <!-- startup simulated world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -18,6 +19,7 @@
     <arg name="limited" value="$(arg limited)"/>
     <arg name="model" value="$(arg model)" />
     <arg name="sim_workstation" value="$(arg sim_workstation)" />
+    <arg name="gripper" value="$(arg gripper)" />
   </include>
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
@@ -25,13 +27,31 @@
 
   <include file="$(find ur_e_gazebo)/launch/controller_utils.launch"/>
 
-  <!-- start this controller -->
-  <!-- eval is required for this: $(eval find(arg('model')) ...), but not for using $(arg model) somewhere else by itself in the line (like the one below) -->
-  <!-- <rosparam file="$(eval find('ur_e_gazebo') + '/controller/arm_controller_' + arg('model') + 'e.yaml')" command="load"/> -->
+  <!-- Load controller configurations -->
   <rosparam file="$(find ur_e_gazebo)/controller/arm_controller_$(arg model)e.yaml" command="load"/>
+  <rosparam file="$(find ur_e_gazebo)/controller/grippers/$(arg gripper)/gripper_action_controller_parameters.yaml" command="load" subst_value="true"
+            unless="$(eval not arg('gripper'))"/>
+
+  <!-- Start the trajectory controllers -->
+
+  <!-- Without gripper -->
+  <node name="$(arg model)_trajectory_controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+            output="screen" args="arm_controller joint_state_controller"
+            if="$(eval not arg('gripper'))"/>
+
+  <!-- With gripper -->
+  <node name="$(arg model)_controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+            output="screen" args="arm_controller joint_state_controller robotiq_2f_85_gripper_controller"
+            unless="$(eval not arg('gripper'))"/>
+
+  <!-- controller manager
   <node name="arm_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller" respawn="false" output="screen"/>
 
-  <!-- load other controllers -->
-  <node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false" output="screen" args="load joint_group_position_controller" />
+  ros_control_controller_manager 
+  <node if="$(eval not arg('gripper'))" name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false" output="screen" args="load joint_group_position_controller" />
+
+  <node unless="$(eval not arg('gripper'))" name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false" output="screen" args="load joint_group_position_controller $(arg gripper)_gripper_controller" />
+  -->
+
 
 </launch>
