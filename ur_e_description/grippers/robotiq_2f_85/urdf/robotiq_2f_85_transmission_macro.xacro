@@ -58,8 +58,9 @@
 
             <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
                 <arm>
-                    <arm_name>my_robotiq_gripper</arm_name>
-                    <palm_link>${prefix}robotiq_arg2f_base_link</palm_link> <!-- Gazebo merges links connected by fixed joints, so here we would have put gripper_base_link but it is merged with Bracelet_Link internally -->
+                    <arm_name>ur5e</arm_name>
+                    <palm_link>${prefix}wrist_3_link</palm_link> 
+                    <!-- Gazebo merges links connected by fixed joints, so you need to check the links in gazebo and choose one that is recognized after internal connections are made. We would want to choose the actual paml of the gripper but it is currently not an option -->
                     <gripper_link> ${prefix}left_inner_finger </gripper_link>
                     <gripper_link> ${prefix}right_inner_finger </gripper_link>
                 </arm>
