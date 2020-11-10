@@ -3,10 +3,11 @@
   <xacro:macro name="robotiq_arg2f_base_link" params="parent prefix">
 
     <!-- This joint was added by Kinova -->
+    <!-- The rotation on this joint has been edited to attach to the URe robots -->
     <joint name="${prefix}gripper_base_joint" type="fixed">
         <parent link="${parent}"/>
         <child link="${prefix}robotiq_arg2f_base_link"/>
-        <origin rpy="0.0 0.0 1.57" xyz="0.0 0.0 0.0"/>
+        <origin rpy="0.0 ${pi/2} 0.0" xyz="0.0 0.0 0.0"/>
     </joint>
     
     <link name="${prefix}robotiq_arg2f_base_link">
@@ -19,8 +20,8 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
           <!-- The DAE file doesn't show well in Gazebo so we're using the STL instead -->
-          <!-- <mesh filename="package://kortex_description/grippers/robotiq_2f_140/meshes/visual/robotiq_arg2f_140_base_link.dae" scale="0.001 0.001 0.001"/> -->
-          <mesh filename="package://kortex_description/grippers/robotiq_2f_140/meshes/collision/robotiq_arg2f_base_link.stl" />
+          <!-- <mesh filename="package://ur_e_description/grippers/robotiq_2f_140/meshes/visual/robotiq_arg2f_140_base_link.dae" scale="0.001 0.001 0.001"/> -->
+          <mesh filename="package://ur_e_description/grippers/robotiq_2f_140/meshes/collision/robotiq_arg2f_base_link.stl" />
         </geometry>
         <material name="">
           <color rgba="0.1 0.1 0.1 1" />
@@ -29,7 +30,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://kortex_description/grippers/robotiq_2f_140/meshes/collision/robotiq_arg2f_base_link.stl" />
+          <mesh filename="package://ur_e_description/grippers/robotiq_2f_140/meshes/collision/robotiq_arg2f_base_link.stl" />
         </geometry>
       </collision>
     </link>
