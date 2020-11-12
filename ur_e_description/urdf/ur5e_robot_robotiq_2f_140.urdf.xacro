@@ -8,7 +8,7 @@
   <!-- ur5e -->
   <xacro:include filename="$(find ur_e_description)/urdf/ur5e.urdf.xacro" />
 
-  <!-- robotiq_2f_85 -->
+  <!-- robotiq_2f_140 -->
   <xacro:include filename="$(find ur_e_description)/grippers/robotiq_2f_140/urdf/robotiq_2f_140_macro.xacro" />
   <xacro:include filename="$(find ur_e_description)/grippers/robotiq_2f_140/urdf/robotiq_2f_140_transmission_macro.xacro" />
 
