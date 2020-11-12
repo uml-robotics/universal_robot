@@ -11,12 +11,19 @@
   <!-- ARMada workstation -->
   <xacro:include filename="$(find uml_hri_nerve_armada_workstation)/workstation_description/workstation_model.urdf.xacro" />
 
-  <!-- robotiq_2f_140 -->
-  <xacro:include filename="$(find ur_e_description)/grippers/robotiq_2f_140/urdf/robotiq_2f_140_macro.xacro" />
-  <xacro:include filename="$(find ur_e_description)/grippers/robotiq_2f_140/urdf/robotiq_2f_140_transmission_macro.xacro" />
+  <!-- robotiq_2f_85 -->
+  <xacro:include filename="$(find ur_e_description)/grippers/robotiq_2f_85/urdf/robotiq_2f_85_macro.xacro" />
+  <xacro:include filename="$(find ur_e_description)/grippers/robotiq_2f_85/urdf/robotiq_2f_85_transmission_macro.xacro" />
 
   <!-- arm -->
-  <xacro:ur10e_robot prefix="" joint_limited="false"/>
+  <xacro:ur10e_robot prefix="" joint_limited="true"
+    shoulder_pan_lower_limit="${-pi}" shoulder_pan_upper_limit="${pi}"
+    shoulder_lift_lower_limit="${-pi}" shoulder_lift_upper_limit="${pi}"
+    elbow_joint_lower_limit="${-pi}" elbow_joint_upper_limit="${pi}"
+    wrist_1_lower_limit="${-pi}" wrist_1_upper_limit="${pi}"
+    wrist_2_lower_limit="${-pi}" wrist_2_upper_limit="${pi}"
+    wrist_3_lower_limit="${-pi}" wrist_3_upper_limit="${pi}"
+  />
 
   <!-- gripper -->
   <xacro:load_gripper parent="ee_link"  prefix=""/>
