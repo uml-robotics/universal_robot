@@ -29,19 +29,19 @@
 
   <!-- Load controller configurations -->
   <rosparam file="$(find ur_e_gazebo)/controller/arm_controller_$(arg model)e.yaml" command="load"/>
-  <rosparam file="$(find ur_e_gazebo)/controller/grippers/$(arg gripper)/gripper_action_controller_parameters.yaml" command="load" subst_value="true"
-            unless="$(eval not arg('gripper'))"/>
+  <rosparam file="$(find ur_e_gazebo)/controller/grippers/$(arg gripper)/gripper_action_controller_parameters.yaml" command="load" 
+	subst_value="true" unless="$(eval not arg('gripper'))"/>
 
   <!-- Start the trajectory controllers -->
 
   <!-- Without gripper -->
   <node name="$(arg model)_trajectory_controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-            output="screen" args="arm_controller joint_state_controller"
+            output="screen" args="arm_controller"
             if="$(eval not arg('gripper'))"/>
 
   <!-- With gripper -->
   <node name="$(arg model)_controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-            output="screen" args="arm_controller joint_state_controller $(arg gripper)_gripper_controller"
+            output="screen" args="arm_controller $(arg gripper)_gripper_controller"
             unless="$(eval not arg('gripper'))"/>
 
 </launch>
