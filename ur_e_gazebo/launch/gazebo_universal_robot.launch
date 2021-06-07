@@ -3,7 +3,7 @@
   
   <!-- Gazebo simulation arguments -->
   <arg name="sim" default="true" doc="If true, *robot*_planning_execution.launch uses ros_controllers instead of real controllers" />
-  <arg name="limited" default="true"  doc="If true, limits joint range [-PI, PI] on all joints" />
+  <arg name="limited" default="false"  doc="If true, limits joint range [-PI, PI] on all joints" />
   <arg name="paused" default="false" doc="Starts gazebo in paused mode" />
   <arg name="gui" default="true" doc="Starts gazebo gui" />
   <arg name="config" default="true" doc="TODO" />
@@ -12,6 +12,10 @@
   <arg name="model" default="ur5" doc="Robot number model: 3, 5, or 10 (16 not currently implemented)"/>
   <arg name="sim_workstation" default="false" doc="Attaches robot to simulated ARMada workstation" />
   <arg name="gripper" default="" doc="Attaches gripper to end of robot arm" />
+  <arg name="wrist_cam" default="" doc="Attaches wrist camera (and millibar mounts) to end of robot arm before gripper"/>
+
+  <!-- testing setting planning_group with param -->
+  <param name="planning_group" type="string" value="manipulator" />
 
   <!-- Bring up Gazebo simulation of robot -->
   <!-- <include file="$(eval find('ur_e_gazebo') + '/launch/' + arg('model') + 'e.launch')"> -->
@@ -20,6 +24,7 @@
       <arg name="model" value="$(arg model)" />
       <arg name="sim_workstation" value="$(arg sim_workstation)" />
       <arg name="gripper" value="$(arg gripper)" />
+      <arg name="wrist_cam" value="$(arg wrist_cam)" />
   </include>
   
   <!-- Launch gazebo controllers for robot -->
@@ -38,6 +43,11 @@
   </include>
   <include file="$(eval find(arg('model') + '_e_' + arg('gripper') + '_moveit_config') + '/launch/moveit_rviz.launch')" unless="$(eval not arg('gripper'))">
       <arg name="config" value="$(arg config)" />
+  </include>
+
+  <!-- Start GPD -->
+  <include file="$(find uml_hri_nerve_pick_and_place)/launch/workstation_gpd.launch" >
+      <arg name="sim" value="false" />
   </include>
 
 </launch>

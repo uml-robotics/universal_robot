@@ -7,7 +7,7 @@
     <joint name="${prefix}gripper_base_joint" type="fixed">
         <parent link="${parent}"/>
         <child link="${prefix}robotiq_arg2f_base_link"/>
-        <origin rpy="0.0 ${pi/2} 0.0" xyz="0.0 0.0 0.0"/>
+        <origin rpy="0.0 0.0 ${pi/2}" xyz="0.0 0.0 0.0"/>
     </joint>
 
     <link name="${prefix}robotiq_arg2f_base_link">

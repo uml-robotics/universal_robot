@@ -46,13 +46,22 @@
         <joint name="wrist_2_joint" value="0" />
         <joint name="wrist_3_joint" value="0" />
     </group_state>
-    <group_state name="preset_1" group="manipulator">
+    <group_state name="retract" group="manipulator">
         <joint name="elbow_joint" value="2.1478" />
         <joint name="shoulder_lift_joint" value="-2.4363" />
         <joint name="shoulder_pan_joint" value="0.7052" />
         <joint name="wrist_1_joint" value="0.0641" />
         <joint name="wrist_2_joint" value="1.6028" />
         <joint name="wrist_3_joint" value="0" />
+    </group_state>
+    <group_state name="combined_rest" group="manipulator_and_endeffector">
+        <joint name="elbow_joint" value="2.1478" />
+        <joint name="shoulder_lift_joint" value="-2.4363" />
+        <joint name="shoulder_pan_joint" value="0.7052" />
+        <joint name="wrist_1_joint" value="0.0641" />
+        <joint name="wrist_2_joint" value="1.6028" />
+        <joint name="wrist_3_joint" value="0" />
+        <joint name="finger_joint" value="0" />
     </group_state>
     <group_state name="preset_2" group="manipulator">
         <joint name="elbow_joint" value="1.122" />

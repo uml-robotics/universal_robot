@@ -6,6 +6,7 @@
   <arg name="model" default="ur5" doc="Indicates which robot model to use/load" />
   <arg name="sim_workstation" default="false" doc="If true, load robot in Gazebo atop simulated ARMada workstation" />
   <arg name="gripper" default="" />
+  <arg name="wrist_cam" default="" />
   
   <!-- startup simulated world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -20,10 +21,11 @@
     <arg name="model" value="$(arg model)" />
     <arg name="sim_workstation" value="$(arg sim_workstation)" />
     <arg name="gripper" value="$(arg gripper)" />
+    <arg name="wrist_cam" value="$(arg wrist_cam)" />
   </include>
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
-  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -z 0.1" respawn="false" output="screen" />
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -z 0.01" respawn="false" output="screen" />
 
   <include file="$(find ur_e_gazebo)/launch/controller_utils.launch"/>
 
